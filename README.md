@@ -1,0 +1,1 @@
+Um sistema de gerenciamento de agendamentos que permite aos usuários realizar operações CRUD de maneira simples e intuitiva. Os usuários podem cadastrar, consultar, editar e excluir agendamentos com facilidade. O backend é desenvolvido com Express.js, as páginas são renderizadas com Handlebars, e o banco de dados utilizado é o Firebase Firestore.
