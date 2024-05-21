@@ -1,0 +1,32 @@
+
+    <div class="container">
+        <h2>Tela de Consulta</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Origem</th>
+                    <th>Data Contato</th>
+                    <th>Observação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each data}}
+                <tr>
+                    <td>{{this.nome}}</td>
+                    <td>{{this.telefone}}</td>
+                    <td>{{this.origem}}</td>
+                    <td>{{this.data_contato}}</td>
+                    <td>{{this.observacao}}</td>
+                    <td>
+                        <a href="/editar/{{id}}"><button class="btn btn-primary">Editar</button></a>
+                        <a href="/excluir/{{id}}"><button class="btn btn-danger">Excluir</button></a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    
