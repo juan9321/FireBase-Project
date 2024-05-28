@@ -1,9 +1,19 @@
+// Importa o módulo express para criar o servidor web.
 const express = require("express");
+
+// Cria uma aplicação Express.
 const app = express();
+
+// Importa o módulo handlebars para renderização de templates.
 const handlebars = require("express-handlebars").engine;
+
+// Importa helpers adicionais para handlebars.
 const helpers = require("handlebars-helpers")();
+
+// Importa o body-parser para processar dados enviados via POST.
 const bodyParser = require("body-parser");
 
+// Importa funções do Firebase Admin SDK para inicializar o app e acessar o Firestore.
 const {
   initializeApp,
   cert,
@@ -13,25 +23,34 @@ const {
   getFirestore,
 } = require("firebase-admin/firestore");
 
+// Carrega as credenciais do Firebase a partir de um arquivo JSON.
 const serviceAccount = require("./Banco.json");
 
+// Inicializa o app Firebase com as credenciais fornecidas.
 initializeApp({
   credential: cert(serviceAccount),
 });
 
+// Inicializa o Firestore para interações com o banco de dados.
 const db = getFirestore();
 
+// Configura o motor de templates handlebars com layout padrão e helpers.
 app.engine("handlebars", handlebars({ defaultLayout: "main", helpers: helpers }));
+
+// Define handlebars como o motor de visualização padrão.
 app.set("view engine", "handlebars");
 
+// Configura o body-parser para processar requisições URL-encoded e JSON.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// Define rota para a página inicial, renderizando 'primeira_pagina' com handlebars.
 app.route("/")
   .get((req, res) => {
     res.render("primeira_pagina");
   });
 
+// Define rota para consultar documentos do Firestore e renderizar 'consulta' com os dados obtidos.
 app.route("/consulta")
   .get(async (req, res) => {
     const dataSnapshot = await db.collection('agendamentos').get();
@@ -49,6 +68,7 @@ app.route("/consulta")
     res.render("consulta", { data });
   });
 
+// Define rota para editar um documento específico, renderizando 'editar' com os dados do documento.
 app.route("/editar/:id")
   .get(async (req, res) => {
     const dataSnapshot = await db.collection('agendamentos').doc(req.params.id).get();
@@ -64,6 +84,7 @@ app.route("/editar/:id")
     res.render("editar", { data });
   });
 
+// Define rota para excluir um documento específico e redirecionar para '/consulta' após a exclusão.
 app.route("/excluir/:id")
   .get((req, res) => {
     db.collection('agendamentos').doc(req.params.id).delete().then(() => {
@@ -75,6 +96,7 @@ app.route("/excluir/:id")
     });
   });
 
+// Define rota para cadastrar um novo documento no Firestore a partir de dados enviados via POST.
 app.route("/cadastrar")
   .post((req, res) => {
     db.collection("agendamentos").add({
@@ -92,6 +114,7 @@ app.route("/cadastrar")
     });
   });
 
+// Define rota para atualizar um documento existente no Firestore a partir de dados enviados via POST.
 app.route("/atualizar")
   .post((req, res) => {
     db.collection("agendamentos").doc(req.body.id).update({
@@ -109,6 +132,7 @@ app.route("/atualizar")
     });
   });
 
+// Inicia o servidor na porta 8081 e imprime mensagem no console.
 app.listen(8081, () => {
   console.log("Servidor ativo na porta 8081!");
 });
