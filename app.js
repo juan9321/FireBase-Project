@@ -1,4 +1,4 @@
-// Importa o módulo express para criar o servidor web.
+// Importa o módulo express para criar o servidor web..
 const express = require("express");
 
 // Cria uma aplicação Express.
